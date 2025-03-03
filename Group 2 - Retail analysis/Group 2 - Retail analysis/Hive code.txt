@@ -1,0 +1,1212 @@
+sandbox login: root                                                                
+root@sandbox.hortonworks.com's password:                                           
+Last login: Sat Nov  2 16:09:51 2024 from 172.17.0.2                               
+[root@sandbox ~]# hdfs dfs -mkdir /project                                         
+[root@sandbox ~]# hdfs dfs -get /project/PP_amazon_data.csv                        
+[root@sandbox ~]# ls -l                                                            
+total 6088                                                                         
+-rw------- 2 root root    2439 Jun  2  2016 anaconda-ks.cfg                        
+-rw-r--r-- 1 root root  373937 Oct 25  2016 blueprint.json                         
+-rw-r--r-- 1 root root      20 Oct 25  2016 build.out                              
+-rw-r--r-- 1 root root    3324 Sep 23 05:25 charan_task3_2.jar
+-rw-r--r-- 1 root root    3349 Sep 23 05:07 charan_task3.jar
+-rw-r--r-- 1 root root    4665 Oct  7 14:42 charan_task_4.jar
+-rw-r--r-- 1 root root    3841 Sep 23 06:02 charan_task_weather.jar
+-rw-r--r-- 1 root root     109 Sep 23 05:26 Dataset1.txt                           
+-rw-r--r-- 1 root root     156 Oct  7 15:55 dataset.txt                            
+-rw-r--r-- 1 root root     109 Sep 23 05:07 Dataset.txt                            
+-rw-r--r-- 1 root root     713 Oct 28 06:28 derby.log                              
+-rw-r--r-- 1 root root     242 Oct  7 16:04 employee.txt                           
+drwxr-xr-x 2 root root    4096 Oct 25  2016 hdp
+-rw-r--r-- 2 root root    7243 Jun  2  2016 install.log                            
+-rw-r--r-- 2 root root    1680 Jun  2  2016 install.log.syslog                     
+-rw-r--r-- 1 root root      70 Oct  7 14:43 matrix_input.txt                       
+-rw-r--r-- 1 root root 5753863 Nov  2 16:14 PP_amazon_data.csv                     
+-rw-r--r-- 1 root root     284 Oct 25  2016 sandbox.info                           
+lrwxrwxrwx 1 root root      48 Oct 25  2016 start_ambari.sh -> /usr/lib/hue/tools/s
+tart_scripts/start_ambari.sh
+lrwxrwxrwx 1 root root      47 Oct 25  2016 start_hbase.sh -> /usr/lib/hue/tools/st
+art_scripts/start_hbase.sh
+-rw-r--r-- 1 root root      32 Oct 21 06:33 students.txt                           
+-rw-r--r-- 1 root root      59 Oct 21 06:33 subjects.txt                           
+-rw-r--r-- 1 root root     150 Oct  7 15:30 weathedata_new.txt                     
+-rw-r--r-- 1 root root     150 Oct  7 15:29 weathedata_old.txt                     
+-rw-r--r-- 1 root root     150 Oct  7 15:30 weathedata.txt                         
+-rw-r--r-- 1 root root     156 Oct  7 15:45 weathertask.txt                        
+-rw-r--r-- 1 root root     178 Sep 23 06:03 weather.txt                            
+[root@sandbox ~]# hdfs dfs -mkdir /AmazonProject                                   
+[root@sandbox ~]# hdfs dfs -put PP_amazon_data.csv /AmazonProject                  
+[root@sandbox ~]# hdfs dfs -ls /AmazonProject                                      
+Found 1 items                                                                      
+-rw-r--r--   1 root hdfs    5753863 2024-11-02 16:16 /AmazonProject/PP_amazon_data.
+csv                                                                                
+[root@sandbox ~]# hive                                                             
+
+Logging initialized using configuration in file:/etc/hive/2.5.0.0-1245/0/hive-log4j
+.properties                                                                        
+hive> CREATE DATABASE amazon;                                                      
+OK                                                                                 
+Time taken: 3.261 seconds                                                          
+hive> USE amazon;                                                                  
+OK                                                                                 
+Time taken: 0.368 seconds                                                          
+hive> REATE TABLE delivery_data (                                                  
+    >     Agent_Age INT,                                                           
+    >     Agent_Rating FLOAT,                                                      
+    >     Drop_Latitude DOUBLE,                                                    
+    >     Drop_Longitude DOUBLE,                                                   
+    >     Order_Date STRING,                                                       
+    >     Order_Time STRING,                                                       
+    >     Pickup_Time STRING,                                                      
+    >     Weather STRING,                                                          
+    >     Traffic STRING,                                                          
+    >     Vehicle STRING,                                                          
+    >     Area STRING,                                                             
+    >     Delivery_Time STRING,                                                    
+    >     Category STRING,                                                         
+    >     Country STRING                                                           
+    > )                                                                            
+    > ROW FORMAT DELIMITED                                                         
+    > FIELDS TERMINATED BY ','                                                     
+    > ;                                                                            
+OK                                                                                 
+Time taken: 1.413 seconds                                                          
+hive> BLE delivery_data (                                                          
+    >     Agent_Age INT,                                                           
+    >     Agent_Rating FLOAT,                                                      
+    >     Drop_Latitude DOUBLE,                                                    
+    >     Drop_Longitude DOUBLE,                                                   
+    >     Order_Date STRING,                                                       
+    >     Order_Time STRING,                                                       
+    >     Pickup_Time STRING,                                                      
+    >     Weather STRING,                                                          
+    >     Traffic STRING,                                                          
+    >     Vehicle STRING,                                                          
+    >     Area STRING,                                                             
+    >     Delivery_Time STRING,                                                    
+    >     Category STRING,                                                         
+    >     Country STRING                                                           
+    > )                                                                            
+    > ROW FORMAT DELIMITED                                                         
+    > FIELDS TERMINATED BY ','                                                     
+    > STORED AS TEXTFILE;                                                          
+FAILED: Execution Error, return code 1 from org.apache.hadoop.hive.ql.exec.DDLTask.
+ AlreadyExistsException(message:Table delivery_data already exists)                
+hive> show tables                                                                  
+    > show tables;                                                                 
+FAILED: ParseException line 2:5 extraneous input 'tables' expecting EOF near '<EOF>
+'                                                                                  
+hive> DROP TABLE delivery_data;                                                    
+OK                                                                                 
+Time taken: 2.383 seconds                                                          
+hive> very_data (                                                                  
+    >     Agent_Age INT,                                                           
+    >     Agent_Rating FLOAT,                                                      
+    >     Drop_Latitude DOUBLE,                                                    
+    >     Drop_Longitude DOUBLE,                                                   
+    >     Order_Date STRING,                                                       
+    >     Order_Time STRING,                                                       
+    >     Pickup_Time STRING,                                                      
+    >     Weather STRING,                                                          
+    >     Traffic STRING,                                                          
+    >     Vehicle STRING,                                                          
+    >     Area STRING,                                                             
+    >     Delivery_Time STRING,                                                    
+    >     Category STRING,                                                         
+    >     Country STRING                                                           
+    > )                                                                            
+    > ROW FORMAT DELIMITED                                                         
+    > FIELDS TERMINATED BY ','                                                     
+    > STORED AS TEXTFILE;                                                          
+OK                                                                                 
+Time taken: 0.962 seconds                                                          
+hive> DROP TABLE delivery_data;                                                    
+OK                                                                                 
+Time taken: 1.283 seconds                                                          
+hive> CREATE TABLE delivery_data (                                                 
+    > Agent_Age INT,                                                               
+    > Agent_Rating FLOAT,                                                          
+    > Drop_Latitude DOUBLE,                                                        
+    > Drop_Longitude DOUBLE,                                                       
+    > Order_Date STRING,                                                           
+    > Order_Time STRING,                                                           
+    > Pickup_Time STRING,                                                          
+    > Weather STRING,                                                              
+    > Traffic STRING,                                                              
+    > Vehicle STRING,                                                              
+    > Area STRING,                                                                 
+    > Delivery_Time                                                                
+    > Delivery_Time                                                                
+    > ;                                                                            
+NoViableAltException(26@[])                                                        
+        at org.apache.hadoop.hive.ql.parse.HiveParser.type(HiveParser.java:38888)  
+        at org.apache.hadoop.hive.ql.parse.HiveParser.colType(HiveParser.java:38645
+        at org.apache.hadoop.hive.ql.parse.HiveParser.columnNameType(HiveParser.jav
+        at org.apache.hadoop.hive.ql.parse.HiveParser.columnNameTypeList(HiveParser
+        at org.apache.hadoop.hive.ql.parse.HiveParser.createTableStatement(HivePars
+        at org.apache.hadoop.hive.ql.parse.HiveParser.ddlStatement(HiveParser.java:
+        at org.apache.hadoop.hive.ql.parse.HiveParser.execStatement(HiveParser.java
+        at org.apache.hadoop.hive.ql.parse.HiveParser.statement(HiveParser.java:112
+        at org.apache.hadoop.hive.ql.parse.ParseDriver.parse(ParseDriver.java:202) 
+        at org.apache.hadoop.hive.ql.parse.ParseDriver.parse(ParseDriver.java:166) 
+        at org.apache.hadoop.hive.ql.Driver.compile(Driver.java:437)               
+        at org.apache.hadoop.hive.ql.Driver.compile(Driver.java:320)               
+        at org.apache.hadoop.hive.ql.Driver.compileInternal(Driver.java:1219)      
+        at org.apache.hadoop.hive.ql.Driver.runInternal(Driver.java:1260)          
+        at org.apache.hadoop.hive.ql.Driver.run(Driver.java:1156)                  
+        at org.apache.hadoop.hive.ql.Driver.run(Driver.java:1146)                  
+        at org.apache.hadoop.hive.cli.CliDriver.processLocalCmd(CliDriver.java:216)
+        at org.apache.hadoop.hive.cli.CliDriver.processCmd(CliDriver.java:168)     
+        at org.apache.hadoop.hive.cli.CliDriver.processLine(CliDriver.java:379)    
+        at org.apache.hadoop.hive.cli.CliDriver.executeDriver(CliDriver.java:739)  
+        at org.apache.hadoop.hive.cli.CliDriver.run(CliDriver.java:684)            
+        at org.apache.hadoop.hive.cli.CliDriver.main(CliDriver.java:624)           
+        at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)             
+        at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.jav
+        at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessor
+        at java.lang.reflect.Method.invoke(Method.java:498)                        
+        at org.apache.hadoop.util.RunJar.run(RunJar.java:233)                      
+        at org.apache.hadoop.util.RunJar.main(RunJar.java:148)                     
+FAILED: ParseException line 14:0 cannot recognize input near 'Delivery_Time' '<EOF>
+hive> CREATE TABLE delivery_data (                                                 
+    >     Agent_Age INT,                                                           
+    >     Agent_Rating FLOAT,                                                      
+    >     Drop_Latitude DOUBLE,                                                    
+    >     Drop_Longitude DOUBLE,                                                   
+    >     Order_Date STRING,                                                       
+    >     Order_Time STRING,                                                       
+    >     Pickup_Time STRING,                                                      
+    >     Weather STRING,                                                          
+    >     Traffic STRING,                                                          
+    >     Vehicle STRING,                                                          
+    >     Area STRING,                                                             
+    >     Delivery_Time STRING,                                                    
+    >     Category STRING,                                                         
+    >     Country STRING                                                           
+    > )                                                                            
+    > ROW FORMAT DELIMITED                                                         
+    > FIELDS TERMINATED BY ','                                                     
+    > STORED AS TEXTFILE;                                                          
+OK                                                                                 
+Time taken: 0.892 seconds                                                          
+hive> LOAD DATA INPATH '/AmazonProject/PP_amazon_data.csv' INTO TABLE delivery_data
+Loading data to table amazon.delivery_data                                         
+Table amazon.delivery_data stats: [numFiles=1, numRows=0, totalSize=5753863, rawDat
+OK                                                                                 
+Time taken: 1.977 seconds                                                          
+hive> SELECT * FROM delivery_data LIMIT 10;                                        
+OK                                                                                 
+NULL    NULL    NULL    NULL    Order_Date      Order_Time      Pickup_Time     Wea
+37      4.9     22.765049       75.912471       2022-03-19      1900-01-01 11:30:00
+USA                                                                                
+34      4.5     13.043041       77.813237       2022-03-25      1900-01-01 19:45:00
+lectronics      USA                                                                
+23      4.4     12.924264       77.6884 2022-03-19      1900-01-01 08:30:00     190
+SA                                                                                 
+38      4.7     11.053669       77.026494       2022-04-05      1900-01-01 18:00:00
+osmetics        China                                                              
+32      4.6     13.012793       80.289982       2022-03-26      1900-01-01 13:30:00
+oys     China                                                                      
+22      4.8     17.461668       78.438321       2022-03-11      1900-01-01 21:20:00
+ermany                                                                             
+33      4.7     23.479746       85.44982        2022-03-04      1900-01-01 19:15:00
+oys     Germany                                                                    
+35      4.6     12.482058       76.73665        2022-03-14      1900-01-01 17:25:00
+nacks   USA                                                                        
+22      4.8     17.563809       78.516744       2022-03-20      1900-01-01 20:55:00
+lectronics      USA                                                                
+Time taken: 1.975 seconds, Fetched: 10 row(s)                                      
+hive> -- Average Delivery Time by Category                                         
+    > SELECT Category, AVG(Delivery_Time) AS Avg_Delivery_Time                     
+    > FROM delivery_data                                                           
+    > GROUP BY Category;                                                           
+Query ID = root_20241102165048_3a4bc84c-22ca-46cc-9a43-f838247f2423                
+Total jobs = 1                                                                     
+Launching Job 1 out of 1                                                           
+Tez session was closed. Reopening...                                               
+Session re-established.                                                            
+
+                                                                                   
+Status: Running (Executing on YARN cluster with App id application_1730561871358_00
+03)                                                                                
+                                                                                   
+--------------------------------------------------------------------------------
+        VERTICES      STATUS  TOTAL  COMPLETED  RUNNING  PENDING  FAILED  KILLED
+--------------------------------------------------------------------------------
+Map 1 ..........   SUCCEEDED      1          1        0        0       0       0
+Reducer 2 ......   SUCCEEDED      1          1        0        0       0       0   
+--------------------------------------------------------------------------------
+VERTICES: 02/02  [==========================>>] 100%  ELAPSED TIME: 17.75 s    
+--------------------------------------------------------------------------------
+OK                                                                                 
+Apparel 132.0487894350697                                                                                                                                               
+Books   131.02160056657223                                                                                                                                              
+Category        NULL                                                                                                                                                    
+Clothing        130.48368953880765                                                                                                                                      
+Cosmetics       132.90250280164364                                                                                                                                      
+Electronics     130.83713583713583                                                                                                                                      
+Grocery 26.539576365663322                                                                                                                                              
+Home    130.95530726256985                                                                                                                                              
+Jewelry 130.7530335474661                                                                                                                                               
+Kitchen 132.32697343808454                                                                                                                                              
+Outdoors        131.05933745904622                                                                                                                                      
+Pet Supplies    131.29182156133828                                                                                                                                      
+Shoes   131.1515378844711                                                                                                                                               
+Skincare        132.02741702741702                                                                                                                                      
+Snacks  131.9043321299639                                                                                                                                               
+Sports  132.24714968738508                                                                                                                                              
+Toys    129.39590075512405                                                                                                                                              
+Time taken: 39.584 seconds, Fetched: 17 row(s)                                                                                                                          
+hive> -- Agent Performance by Area                                                                                                                                      
+    > SELECT Area, AVG(Agent_Rating) AS Avg_Rating, AVG(Agent_Age) AS Avg_Age                                                                                           
+    > FROM delivery_data                                                                                                                                                
+    > GROUP BY Area;                                                                                                                                                    
+Query ID = root_20241102165305_1a6e9216-add7-47e5-a0a6-f0f095fe39b8                                                                                                     
+Total jobs = 1                                                                                                                                                          
+Launching Job 1 out of 1                                                                                                                                                
+                                                                                                                                                                        
+                                                                                                                                                                        
+Status: Running (Executing on YARN cluster with App id application_1730561871358_0003)                                                                                  
+                                                                                                                                                                        
+--------------------------------------------------------------------------------
+        VERTICES      STATUS  TOTAL  COMPLETED  RUNNING  PENDING  FAILED  KILLED
+--------------------------------------------------------------------------------
+Map 1 ..........   SUCCEEDED      1          1        0        0       0       0
+Reducer 2 ......   SUCCEEDED      1          1        0        0       0       0                                                                                        
+--------------------------------------------------------------------------------
+VERTICES: 02/02  [==========================>>] 100%  ELAPSED TIME: 10.42 s    
+--------------------------------------------------------------------------------
+OK                                                                                                                                                                      
+Area    NULL    NULL                                                                                                                                                    
+Metropolitian   4.61688788385302        29.7851244724448                                                                                                                
+Other   4.664323371826869       28.789982425307556                                                                                                                      
+Semi-Urban      4.49210524559021        32.56578947368421                                                                                                               
+Urban   4.6634088791941215      28.88011486001436                                                                                                                       
+Time taken: 14.04 seconds, Fetched: 5 row(s)                                                                                                                            
+hive> -- Average Delivery time by weather condition                                                                                                                     
+    > SELECT Weather, AVG(Delivery_Time) AS Avg_Delivery_Time                                                                                                           
+    > FROM delivery_data                                                                                                                                                
+    > GROUP BY Weather;                                                                                                                                                 
+Query ID = root_20241102165433_54f8a655-c7ca-43d7-8aaa-f794e55bd4d3                                                                                                     
+Total jobs = 1                                                                                                                                                          
+Launching Job 1 out of 1                                                                                                                                                
+                                                                                                                                                                        
+                                                                                                                                                                        
+Status: Running (Executing on YARN cluster with App id application_1730561871358_0003)                                                                                  
+                                                                                                                                                                        
+--------------------------------------------------------------------------------
+        VERTICES      STATUS  TOTAL  COMPLETED  RUNNING  PENDING  FAILED  KILLED
+--------------------------------------------------------------------------------
+Map 1 ..........   SUCCEEDED      1          1        0        0       0       0
+Reducer 2 ......   SUCCEEDED      1          1        0        0       0       0                                                                                        
+--------------------------------------------------------------------------------
+VERTICES: 02/02  [==========================>>] 100%  ELAPSED TIME: 10.04 s    
+--------------------------------------------------------------------------------
+OK                                                                                                                                                                      
+0       120.67032967032966                                                                                                                                              
+Weather NULL                                                                                                                                                            
+cloudy  138.28677277716795                                                                                                                                              
+fog     136.57083333333333                                                                                                                                              
+sandstorms      123.23850931677019                                                                                                                                      
+stormy  123.21182533224844                                                                                                                                              
+sunny   103.66445323537722                                                                                                                                              
+windy   123.65803682680327                                                                                                                                              
+Time taken: 11.563 seconds, Fetched: 8 row(s)                                                                                                                           
+hive> -- Impact of traffic on Delivery time                                                                                                                             
+    > SELECT Traffic, AVG(Delivery_Time) AS Avg_Delivery_Time                                                                                                           
+    > FROM delivery_data                                                                                                                                                
+    > GROUP BY Traffic;                                                                                                                                                 
+Query ID = root_20241102165558_e6b026ff-4071-465b-a6be-eadac7d139f0                                                                                                     
+Total jobs = 1                                                                                                                                                          
+Launching Job 1 out of 1                                                                                                                                                
+                                                                                                                                                                        
+                                                                                                                                                                        
+Status: Running (Executing on YARN cluster with App id application_1730561871358_0003)                                                                                  
+                                                                                                                                                                        
+--------------------------------------------------------------------------------
+        VERTICES      STATUS  TOTAL  COMPLETED  RUNNING  PENDING  FAILED  KILLED
+--------------------------------------------------------------------------------
+Map 1 ..........   SUCCEEDED      1          1        0        0       0       0
+Reducer 2 ......   SUCCEEDED      1          1        0        0       0       0                                                                                        
+--------------------------------------------------------------------------------
+VERTICES: 02/02  [==========================>>] 100%  ELAPSED TIME: 11.42 s    
+--------------------------------------------------------------------------------
+OK                                                                                                                                                                      
+High    129.42411545623835                                                                                                                                              
+Jam     147.75897996357014                                                                                                                                              
+Low     101.3545569704647                                                                                                                                               
+Medium  126.83966879939781                                                                                                                                              
+NaN     120.67032967032966                                                                                                                                              
+Traffic NULL                                                                                                                                                            
+Time taken: 12.736 seconds, Fetched: 6 row(s)                                                                                                                           
+hive> -- Average delivery time by vehicle type in different areas                                                                                                       
+    > SELECT Vehicle, Area, AVG(Delivery_Time) AS Avg_Delivery_Time                                                                                                     
+    > FROM delivery_data                                                                                                                                                
+    > GROUP BY Vehicle, Area;                                                                                                                                           
+Query ID = root_20241102165737_eb5d288b-a41b-4b91-b8f9-68ecebaf0d03                                                                                                     
+Total jobs = 1                                                                                                                                                          
+Launching Job 1 out of 1                                                                                                                                                
+                                                                                                                                                                        
+                                                                                                                                                                        
+Status: Running (Executing on YARN cluster with App id application_1730561871358_0003)                                                                                  
+                                                                                                                                                                        
+--------------------------------------------------------------------------------
+        VERTICES      STATUS  TOTAL  COMPLETED  RUNNING  PENDING  FAILED  KILLED
+--------------------------------------------------------------------------------
+Map 1 ..........   SUCCEEDED      1          1        0        0       0       0
+Reducer 2 ......   SUCCEEDED      1          1        0        0       0       0                                                                                        
+--------------------------------------------------------------------------------
+VERTICES: 02/02  [==========================>>] 100%  ELAPSED TIME: 9.18 s     
+--------------------------------------------------------------------------------
+OK                                                                                                                                                                      
+Vehicle Area    NULL                                                                                                                                                    
+bicycle         Metropolitian   127.0                                                                                                                                   
+motorcycle      Metropolitian   135.27401859504133                                                                                                                      
+motorcycle      Other   109.35643564356435                                                                                                                              
+motorcycle      Semi-Urban      238.53571428571428                                                                                                                      
+motorcycle      Urban   115.50249031543996                                                                                                                              
+scooter         Metropolitian   121.80020597322348                                                                                                                      
+scooter         Other   98.02257336343115                                                                                                                               
+scooter         Semi-Urban      236.66666666666666                                                                                                                      
+scooter         Urban   101.80148317170564                                                                                                                              
+van     Metropolitian   120.83762301286905                                                                                                                              
+van     Other   103.2247191011236                                                                                                                                       
+van     Semi-Urban      245.0                                                                                                                                           
+van     Urban   101.99150485436893                                                                                                                                      
+Time taken: 10.485 seconds, Fetched: 14 row(s)                                                                                                                          
+hive> -- Top 5 Product Categories by Sales Volume for Each Country                                                                                                      
+    > SELECT Country, Category, COUNT(*) AS Sales_Volume                                                                                                                
+    > FROM delivery_data                                                                                                                                                
+    > GROUP BY Country, Category                                                                                                                                        
+    > ORDER BY Country, Sales_Volume DESC                                                                                                                               
+    > LIMIT 5;                                                                                                                                                          
+Query ID = root_20241102165948_14f2e5fa-a162-40e5-a23f-e04f78c2bf5c                                                                                                     
+Total jobs = 1                                                                                                                                                          
+Launching Job 1 out of 1                                                                                                                                                
+                                                                                                                                                                        
+                                                                                                                                                                        
+Status: Running (Executing on YARN cluster with App id application_1730561871358_0003)                                                                                  
+                                                                                                                                                                        
+--------------------------------------------------------------------------------
+        VERTICES      STATUS  TOTAL  COMPLETED  RUNNING  PENDING  FAILED  KILLED
+--------------------------------------------------------------------------------
+Map 1 ..........   SUCCEEDED      1          1        0        0       0       0
+Reducer 2 ......   SUCCEEDED      1          1        0        0       0       0                                                                                        
+Reducer 3 ......   SUCCEEDED      1          1        0        0       0       0                                                                                        
+--------------------------------------------------------------------------------
+VERTICES: 03/03  [==========================>>] 100%  ELAPSED TIME: 8.21 s     
+--------------------------------------------------------------------------------
+OK                                                                                                                                                                      
+China   Books   686                                                                                                                                                     
+China   Electronics     654                                                                                                                                             
+China   Outdoors        650                                                                                                                                             
+China   Jewelry 650                                                                                                                                                     
+China   Pet Supplies    632                                                                                                                                             
+Time taken: 10.039 seconds, Fetched: 5 row(s)                                                                                                                           
+hive> -- Categories with Highest Delays in High Traffic Conditions                                                                                                      
+    > SELECT Category, Traffic, AVG(Delivery_Time) AS Avg_Delivery_Time                                                                                                 
+    > FROM delivery_data                                                                                                                                                
+    > WHERE Traffic = 'High' OR Traffic = 'Jam'                                                                                                                         
+    > GROUP BY Category, Traffic                                                                                                                                        
+    > ORDER BY Avg_Delivery_Time DESC;                                                                                                                                  
+Query ID = root_20241102170112_1fe7b61d-d9e8-4727-8e0b-7df0f2cf1ae2                                                                                                     
+Total jobs = 1                                                                                                                                                          
+Launching Job 1 out of 1                                                                                                                                                
+                                                                                                                                                                        
+                                                                                                                                                                        
+Status: Running (Executing on YARN cluster with App id application_1730561871358_0003)                                                                                  
+                                                                                                                                                                        
+--------------------------------------------------------------------------------
+        VERTICES      STATUS  TOTAL  COMPLETED  RUNNING  PENDING  FAILED  KILLED
+--------------------------------------------------------------------------------
+Map 1 ..........   SUCCEEDED      1          1        0        0       0       0
+Reducer 2 ......   SUCCEEDED      1          1        0        0       0       0                                                                                        
+Reducer 3 ......   SUCCEEDED      1          1        0        0       0       0                                                                                        
+--------------------------------------------------------------------------------
+VERTICES: 03/03  [==========================>>] 100%  ELAPSED TIME: 8.21 s     
+--------------------------------------------------------------------------------
+OK                                                                                                                                                                      
+Time taken: 10.34 seconds                                                                                                                                               
+hive>                                                                                                                                                                   
+Query ID = root_20241102170202_fa3acf44-a114-4e61-a8c8-5f2625a05bba                                                                                                     
+Total jobs = 1                                                                                                                                                          
+Launching Job 1 out of 1                                                                                                                                                
+                                                                                                                                                                        
+                                                                                                                                                                        
+Status: Running (Executing on YARN cluster with App id application_1730561871358_0003)                                                                                  
+                                                                                                                                                                        
+--------------------------------------------------------------------------------
+        VERTICES      STATUS  TOTAL  COMPLETED  RUNNING  PENDING  FAILED  KILLED
+--------------------------------------------------------------------------------
+Map 1 ..........   SUCCEEDED      1          1        0        0       0       0
+Reducer 2 ......   SUCCEEDED      1          1        0        0       0       0                                                                                        
+Reducer 3 ......   SUCCEEDED      1          1        0        0       0       0                                                                                        
+--------------------------------------------------------------------------------
+VERTICES: 03/03  [==========================>>] 100%  ELAPSED TIME: 7.59 s     
+--------------------------------------------------------------------------------
+OK                                                                                                                                                                      
+Time taken: 8.807 seconds                                                                                                                                               
+hive> -- High-Rated Agent Assignment by Category                                                                                                                        
+    > SELECT Category, COUNT(*) AS High_Rated_Agent_Assignments                                                                                                         
+    > FROM delivery_data                                                                                                                                                
+    > WHERE Agent_Rating > 4.5                                                                                                                                          
+    > GROUP BY Category                                                                                                                                                 
+    > ORDER BY High_Rated_Agent_Assignments DESC;                                                                                                                       
+Query ID = root_20241102170320_8d3200dd-6f2d-43ac-9b22-5e0015b247a4                                                                                                     
+Total jobs = 1                                                                                                                                                          
+Launching Job 1 out of 1                                                                                                                                                
+                                                                                                                                                                        
+                                                                                                                                                                        
+Status: Running (Executing on YARN cluster with App id application_1730561871358_0003)                                                                                  
+                                                                                                                                                                        
+--------------------------------------------------------------------------------
+        VERTICES      STATUS  TOTAL  COMPLETED  RUNNING  PENDING  FAILED  KILLED
+--------------------------------------------------------------------------------
+Map 1 ..........   SUCCEEDED      1          1        0        0       0       0
+Reducer 2 ......   SUCCEEDED      1          1        0        0       0       0                                                                                        
+Reducer 3 ......   SUCCEEDED      1          1        0        0       0       0                                                                                        
+--------------------------------------------------------------------------------
+VERTICES: 03/03  [==========================>>] 100%  ELAPSED TIME: 8.42 s     
+--------------------------------------------------------------------------------
+OK                                                                                                                                                                      
+Books   2105                                                                                                                                                            
+Electronics     2082                                                                                                                                                    
+Outdoors        2065                                                                                                                                                    
+Skincare        2058                                                                                                                                                    
+Jewelry 2055                                                                                                                                                            
+Toys    2050                                                                                                                                                            
+Snacks  2046                                                                                                                                                            
+Pet Supplies    2008                                                                                                                                                    
+Sports  2002                                                                                                                                                            
+Apparel 2000                                                                                                                                                            
+Shoes   1986                                                                                                                                                            
+Grocery 1986                                                                                                                                                            
+Clothing        1983                                                                                                                                                    
+Kitchen 1966                                                                                                                                                            
+Cosmetics       1965                                                                                                                                                    
+Home    1963                                                                                                                                                            
+Time taken: 9.81 seconds, Fetched: 16 row(s)                                                                                                                            
+hive> -- Most Popular Categories in Urban vs. Metropolitan Areas                                                                                                        
+    > SELECT Area, Category, COUNT(*) AS Product_Demand                                                                                                                 
+    > FROM delivery_data                                                                                                                                                
+    > WHERE Area IN ('Urban', 'Metropolitan')                                                                                                                           
+    > GROUP BY Area, Category                                                                                                                                           
+    > ORDER BY Area, Product_Demand DESC;                                                                                                                               
+Query ID = root_20241102170459_7be31e56-5a81-4ff4-868f-a843b6ffb8b7                                                                                                     
+Total jobs = 1                                                                                                                                                          
+Launching Job 1 out of 1                                                                                                                                                
+                                                                                                                                                                        
+                                                                                                                                                                        
+Status: Running (Executing on YARN cluster with App id application_1730561871358_0003)                                                                                  
+                                                                                                                                                                        
+--------------------------------------------------------------------------------
+        VERTICES      STATUS  TOTAL  COMPLETED  RUNNING  PENDING  FAILED  KILLED
+--------------------------------------------------------------------------------
+Map 1 ..........   SUCCEEDED      1          1        0        0       0       0
+Reducer 2 ......   SUCCEEDED      1          1        0        0       0       0                                                                                        
+Reducer 3 ......   SUCCEEDED      1          1        0        0       0       0                                                                                        
+--------------------------------------------------------------------------------
+VERTICES: 03/03  [==========================>>] 100%  ELAPSED TIME: 7.38 s     
+--------------------------------------------------------------------------------
+OK                                                                                                                                                                      
+Time taken: 8.538 seconds                                                                                                                                               
+hive> -- Average Time Difference Between Order and Pickup by Category and Area                                                                                          
+    > SELECT Category, Area,                                                                                                                                            
+    >        AVG(UNIX_TIMESTAMP(Pickup_Time, 'dd-MM-yyyy HH:mm') - UNIX_TIMESTAMP(Order_Time, 'dd-MM-yyyy HH:mm')) / 60 AS Avg_Order_Pickup_Time                        
+    > FROM delivery_data                                                                                                                                                
+    > GROUP BY Category, Area;                                                                                                                                          
+Query ID = root_20241102170628_3b7296f6-edc3-4aca-9567-59edc2464fe9                                                                                                     
+Total jobs = 1                                                                                                                                                          
+Launching Job 1 out of 1                                                                                                                                                
+                                                                                                                                                                        
+                                                                                                                                                                        
+Status: Running (Executing on YARN cluster with App id application_1730561871358_0003)                                                                                  
+                                                                                                                                                                        
+--------------------------------------------------------------------------------
+        VERTICES      STATUS  TOTAL  COMPLETED  RUNNING  PENDING  FAILED  KILLED
+--------------------------------------------------------------------------------
+Map 1 ..........   SUCCEEDED      1          1        0        0       0       0
+Reducer 2 ......   SUCCEEDED      1          1        0        0       0       0                                                                                        
+--------------------------------------------------------------------------------
+VERTICES: 02/02  [==========================>>] 100%  ELAPSED TIME: 8.72 s     
+--------------------------------------------------------------------------------
+OK                                                                                                                                                                      
+Apparel Metropolitian   -19.645650048875854                                                                                                                             
+Apparel Other   -36.693548387096776                                                                                                                                     
+Apparel Semi-Urban      8.846153846153845                                                                                                                               
+Apparel Urban   -14.01830282861897                                                                                                                                      
+Books   Metropolitian   -22.689903846153847                                                                                                                             
+Books   Other   -9.652777777777777                                                                                                                                      
+Books   Semi-Urban      10.714285714285715                                                                                                                              
+Books   Urban   -18.31306990881459                                                                                                                                      
+Category        Area    NULL                                                                                                                                            
+Clothing        Metropolitian   -10.845035105315949                                                                                                                     
+Clothing        Other   -32.35294117647059                                                                                                                              
+Clothing        Semi-Urban      12.222222222222223                                                                                                                      
+Clothing        Urban   -28.883248730964468                                                                                                                             
+Cosmetics       Metropolitian   -26.832329317269075                                                                                                                     
+Cosmetics       Other   -31.25                                                                                                                                          
+Cosmetics       Semi-Urban      9.444444444444445                                                                                                                       
+Cosmetics       Urban   -30.88186356073211                                                                                                                              
+Electronics     Metropolitian   -22.59433962264151                                                                                                                      
+Electronics     Other   -92.71428571428572                                                                                                                              
+Electronics     Semi-Urban      10.909090909090908                                                                                                                      
+Electronics     Urban   -12.562305295950155                                                                                                                             
+Grocery Metropolitian   -8.448616600790514                                                                                                                              
+Grocery Other   -47.86666666666667                                                                                                                                      
+Grocery Semi-Urban      10.625                                                                                                                                          
+Grocery Urban   -31.97934595524957                                                                                                                                      
+Home    Metropolitian   -11.767955801104971                                                                                                                             
+Home    Other   -10.37313432835821                                                                                                                                      
+Home    Semi-Urban      6.666666666666667                                                                                                                               
+Home    Urban   -24.935064935064936                                                                                                                                     
+Jewelry Metropolitian   -13.153697438376026                                                                                                                             
+Jewelry Other   -66.25                                                                                                                                                  
+Jewelry Semi-Urban      10.0                                                                                                                                            
+Jewelry Urban   -19.207221350078495                                                                                                                                     
+Kitchen Metropolitian   -19.871541501976285                                                                                                                             
+Kitchen Other   -7.7439024390243905                                                                                                                                     
+Kitchen Semi-Urban      12.0                                                                                                                                            
+Kitchen Urban   -26.442831215970962                                                                                                                                     
+Outdoors        Metropolitian   -9.721135029354206                                                                                                                      
+Outdoors        Other   -37.88135593220339                                                                                                                              
+Outdoors        Semi-Urban      10.0                                                                                                                                    
+Outdoors        Urban   -19.502369668246445                                                                                                                             
+Pet Supplies    Metropolitian   -5.8618127786032685                                                                                                                     
+Pet Supplies    Other   -31.197183098591548                                                                                                                             
+Pet Supplies    Semi-Urban      12.0                                                                                                                                    
+Pet Supplies    Urban   -9.592529711375212                                                                                                                              
+Shoes   Metropolitian   -16.472483886960834                                                                                                                             
+Shoes   Other   10.833333333333334                                                                                                                                      
+Shoes   Semi-Urban      12.5                                                                                                                                            
+Shoes   Urban   -22.071917808219176                                                                                                                                     
+Skincare        Metropolitian   -20.97358121330724                                                                                                                      
+Skincare        Other   -46.578947368421055                                                                                                                             
+Skincare        Semi-Urban      10.357142857142858                                                                                                                      
+Skincare        Urban   -12.824367088607595                                                                                                                             
+Snacks  Metropolitian   -27.266275085658343                                                                                                                             
+Snacks  Other   -28.01282051282051                                                                                                                                      
+Snacks  Semi-Urban      6.8181818181818175                                                                                                                              
+Snacks  Urban   -12.519685039370078                                                                                                                                     
+Sports  Metropolitian   -18.800585080448563                                                                                                                             
+Sports  Other   -27.5                                                                                                                                                   
+Sports  Semi-Urban      10.454545454545455                                                                                                                              
+Sports  Urban   -5.401396160558464                                                                                                                                      
+Toys    Metropolitian   -2.444605009633911                                                                                                                              
+Toys    Other   -77.80487804878048                                                                                                                                      
+Toys    Semi-Urban      9.23076923076923                                                                                                                                
+Toys    Urban   -25.79734219269103                                                                                                                                      
+Time taken: 10.805 seconds, Fetched: 65 row(s)                                                                                                                          
+hive> -- Average Delivery Time by Weather and Traffic Conditions                                                                                                        
+    > SELECT Weather, Traffic, AVG(Delivery_Time) AS Avg_Delivery_Time                                                                                                  
+    > FROM delivery_data                                                                                                                                                
+    > GROUP BY Weather, Traffic;                                                                                                                                        
+Query ID = root_20241102171113_7542c58e-13b5-4201-8bd4-1fab9bf56c1f                                                                                                     
+Total jobs = 1                                                                                                                                                          
+Launching Job 1 out of 1                                                                                                                                                
+                                                                                                                                                                        
+                                                                                                                                                                        
+Status: Running (Executing on YARN cluster with App id application_1730561871358_0003)                                                                                  
+                                                                                                                                                                        
+--------------------------------------------------------------------------------
+        VERTICES      STATUS  TOTAL  COMPLETED  RUNNING  PENDING  FAILED  KILLED
+--------------------------------------------------------------------------------
+Map 1 ..........   SUCCEEDED      1          1        0        0       0       0
+Reducer 2 ......   SUCCEEDED      1          1        0        0       0       0                                                                                        
+--------------------------------------------------------------------------------
+VERTICES: 02/02  [==========================>>] 100%  ELAPSED TIME: 7.44 s     
+--------------------------------------------------------------------------------
+OK                                                                                                                                                                      
+0       NaN     120.67032967032966                                                                                                                                      
+Weather Traffic NULL                                                                                                                                                    
+cloudy  High    138.7350069735007                                                                                                                                       
+cloudy  Jam     174.58447287163654                                                                                                                                      
+cloudy  Low     106.70217821782178                                                                                                                                      
+cloudy  Medium  136.68071950534008                                                                                                                                      
+fog     High    134.93527080581242                                                                                                                                      
+fog     Jam     174.1627906976744                                                                                                                                       
+fog     Low     104.9047619047619                                                                                                                                       
+fog     Medium  132.19466073414907                                                                                                                                      
+sandstorms      High    131.85693215339234                                                                                                                              
+sandstorms      Jam     142.30267702936098                                                                                                                              
+sandstorms      Low     96.78809523809524                                                                                                                               
+sandstorms      Medium  132.8625072212594                                                                                                                               
+stormy  High    131.9172510518934                                                                                                                                       
+stormy  Jam     142.29083665338646                                                                                                                                      
+stormy  Low     98.54142802596411                                                                                                                                       
+stormy  Medium  131.79584969153112                                                                                                                                      
+sunny   High    110.18296089385476                                                                                                                                      
+sunny   Jam     108.67562724014337                                                                                                                                      
+sunny   Low     102.56643065389422                                                                                                                                      
+sunny   Medium  96.02082128397917                                                                                                                                       
+windy   High    128.72727272727272                                                                                                                                      
+windy   Jam     142.9317585301837                                                                                                                                       
+windy   Low     98.66859983429991                                                                                                                                       
+windy   Medium  130.64933628318585                                                                                                                                      
+Time taken: 8.983 seconds, Fetched: 26 row(s)                                                                                                                           
+hive> --Delivery Times for Each Country by Vehicle Type                                                                                                                 
+    > SELECT Country, Vehicle, AVG(Delivery_Time) AS Avg_Delivery_Time                                                                                                  
+    > FROM delivery_data                                                                                                                                                
+    > GROUP BY Country, Vehicle;                                                                                                                                        
+Query ID = root_20241102171227_d78a1bdc-2e53-41a8-82fc-d65176dab664                                                                                                     
+Total jobs = 1                                                                                                                                                          
+Launching Job 1 out of 1                                                                                                                                                
+                                                                                                                                                                        
+                                                                                                                                                                        
+Status: Running (Executing on YARN cluster with App id application_1730561871358_0003)                                                                                  
+                                                                                                                                                                        
+--------------------------------------------------------------------------------
+        VERTICES      STATUS  TOTAL  COMPLETED  RUNNING  PENDING  FAILED  KILLED
+--------------------------------------------------------------------------------
+Map 1 ..........   SUCCEEDED      1          1        0        0       0       0
+Reducer 2 ......   SUCCEEDED      1          1        0        0       0       0                                                                                        
+--------------------------------------------------------------------------------
+VERTICES: 02/02  [==========================>>] 100%  ELAPSED TIME: 4.80 s     
+--------------------------------------------------------------------------------
+OK                                                                                                                                                                      
+China   bicycle         107.5                                                                                                                                           
+China   motorcycle      131.63851699279093                                                                                                                              
+China   scooter         115.99458646616542                                                                                                                              
+China   van     117.32968369829683                                                                                                                                      
+Country Vehicle NULL                                                                                                                                                    
+Germany bicycle         111.0                                                                                                                                           
+Germany motorcycle      130.09240596167496                                                                                                                              
+Germany scooter         116.94708994708995                                                                                                                              
+Germany van     114.73936750272628                                                                                                                                      
+Other   bicycle         150.0                                                                                                                                           
+Other   motorcycle      132.4259151656014                                                                                                                               
+Other   scooter         116.79816513761467                                                                                                                              
+Other   van     118.20335429769392                                                                                                                                      
+USA     bicycle         146.0                                                                                                                                           
+USA     motorcycle      131.10066864784548                                                                                                                              
+USA     scooter         116.24338063969498                                                                                                                              
+USA     van     115.68104906937394                                                                                                                                      
+USA     bicycle         105.0                                                                                                                                           
+USA     motorcycle      128.91300527240773                                                                                                                              
+USA     scooter         114.24471299093656                                                                                                                              
+USA     van     115.23125                                                                                                                                               
+Time taken: 5.78 seconds, Fetched: 21 row(s)                                                                                                                            
+hive> -- Top Performing Agents (Rating > 4.5) by Country                                                                                                                
+    > SELECT Country, Agent_Rating, COUNT(*) AS High_Performance_Count                                                                                                  
+    > FROM delivery_data                                                                                                                                                
+    > WHERE Agent_Rating > 4.5                                                                                                                                          
+    > GROUP BY Country, Agent_Rating                                                                                                                                    
+    > ORDER BY High_Performance_Count DESC;                                                                                                                             
+Query ID = root_20241102171337_0c8fbb01-72e4-4760-bb89-addfb7d23ca1                                                                                                     
+Total jobs = 1                                                                                                                                                          
+Launching Job 1 out of 1                                                                                                                                                
+                                                                                                                                                                        
+                                                                                                                                                                        
+Status: Running (Executing on YARN cluster with App id application_1730561871358_0003)                                                                                  
+                                                                                                                                                                        
+--------------------------------------------------------------------------------
+        VERTICES      STATUS  TOTAL  COMPLETED  RUNNING  PENDING  FAILED  KILLED
+--------------------------------------------------------------------------------
+Map 1 ..........   SUCCEEDED      1          1        0        0       0       0
+Reducer 2 ......   SUCCEEDED      1          1        0        0       0       0                                                                                        
+Reducer 3 ......   SUCCEEDED      1          1        0        0       0       0                                                                                        
+--------------------------------------------------------------------------------
+VERTICES: 03/03  [==========================>>] 100%  ELAPSED TIME: 8.55 s     
+--------------------------------------------------------------------------------
+OK                                                                                                                                                                      
+USA     4.8     2342                                                                                                                                                    
+USA     4.7     2315                                                                                                                                                    
+USA     4.9     2216                                                                                                                                                    
+USA     4.6     2190                                                                                                                                                    
+Germany 4.7     1973                                                                                                                                                    
+Germany 4.9     1924                                                                                                                                                    
+Germany 4.8     1899                                                                                                                                                    
+Germany 4.6     1881                                                                                                                                                    
+China   4.9     1628                                                                                                                                                    
+China   4.7     1615                                                                                                                                                    
+China   4.8     1612                                                                                                                                                    
+China   4.6     1605                                                                                                                                                    
+USA     5.0     1259                                                                                                                                                    
+Germany 5.0     1105                                                                                                                                                    
+Other   4.6     962                                                                                                                                                     
+Other   4.8     953                                                                                                                                                     
+Other   4.9     949                                                                                                                                                     
+Other   4.7     943                                                                                                                                                     
+China   5.0     902                                                                                                                                                     
+Other   5.0     541                                                                                                                                                     
+USA     4.8     342                                                                                                                                                     
+USA     4.9     324                                                                                                                                                     
+USA     4.6     302                                                                                                                                                     
+USA     4.7     296                                                                                                                                                     
+USA     5.0     189                                                                                                                                                     
+USA     6.0     19                                                                                                                                                      
+Germany 6.0     15                                                                                                                                                      
+China   6.0     11                                                                                                                                                      
+Other   6.0     7                                                                                                                                                       
+USA     6.0     1                                                                                                                                                       
+Time taken: 9.397 seconds, Fetched: 30 row(s)                                                                                                                           
+hive> Most Frequent Weather Condition in Delayed Deliveries (Over 150 Minutes)                                                                                          
+    > SELECT Weather, COUNT(*) AS Delay_Count                                                                                                                           
+    > FROM delivery_data                                                                                                                                                
+    > WHERE Delivery_Time > 150                                                                                                                                         
+    > GROUP BY Weather                                                                                                                                                  
+    > ORDER BY Delay_Count DESC;                                                                                                                                        
+NoViableAltException(26@[])                                                                                                                                             
+        at org.apache.hadoop.hive.ql.parse.HiveParser.statement(HiveParser.java:1084)                                                                                   
+        at org.apache.hadoop.hive.ql.parse.ParseDriver.parse(ParseDriver.java:202)                                                                                      
+        at org.apache.hadoop.hive.ql.parse.ParseDriver.parse(ParseDriver.java:166)                                                                                      
+        at org.apache.hadoop.hive.ql.Driver.compile(Driver.java:437)                                                                                                    
+        at org.apache.hadoop.hive.ql.Driver.compile(Driver.java:320)                                                                                                    
+        at org.apache.hadoop.hive.ql.Driver.compileInternal(Driver.java:1219)                                                                                           
+        at org.apache.hadoop.hive.ql.Driver.runInternal(Driver.java:1260)                                                                                               
+        at org.apache.hadoop.hive.ql.Driver.run(Driver.java:1156)                                                                                                       
+        at org.apache.hadoop.hive.ql.Driver.run(Driver.java:1146)                                                                                                       
+        at org.apache.hadoop.hive.cli.CliDriver.processLocalCmd(CliDriver.java:216)                                                                                     
+        at org.apache.hadoop.hive.cli.CliDriver.processCmd(CliDriver.java:168)                                                                                          
+        at org.apache.hadoop.hive.cli.CliDriver.processLine(CliDriver.java:379)                                                                                         
+        at org.apache.hadoop.hive.cli.CliDriver.executeDriver(CliDriver.java:739)                                                                                       
+        at org.apache.hadoop.hive.cli.CliDriver.run(CliDriver.java:684)                                                                                                 
+        at org.apache.hadoop.hive.cli.CliDriver.main(CliDriver.java:624)                                                                                                
+        at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)                                                                                                  
+        at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:62)                                                                                
+        at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)                                                                        
+        at java.lang.reflect.Method.invoke(Method.java:498)                                                                                                             
+        at org.apache.hadoop.util.RunJar.run(RunJar.java:233)                                                                                                           
+        at org.apache.hadoop.util.RunJar.main(RunJar.java:148)                                                                                                          
+FAILED: ParseException line 1:0 cannot recognize input near 'Most' 'Frequent' 'Weather'                                                                                 
+hive> -- SELECT Weather, COUNT(*) AS Delay_Count                                                                                                                        
+    > FROM delivery_data                                                                                                                                                
+    > WHERE Delivery_Time > 150                                                                                                                                         
+    > GROUP BY Weather                                                                                                                                                  
+    >                                                                                                                                                                   
+    > ;                                                                                                                                                                 
+org.antlr.runtime.EarlyExitException                                                                                                                                    
+        at org.apache.hadoop.hive.ql.parse.HiveParser.singleFromStatement(HiveParser.java:41341)                                                                        
+        at org.apache.hadoop.hive.ql.parse.HiveParser.fromStatement(HiveParser.java:41021)                                                                              
+        at org.apache.hadoop.hive.ql.parse.HiveParser.queryStatementExpressionBody(HiveParser.java:40676)                                                               
+        at org.apache.hadoop.hive.ql.parse.HiveParser.queryStatementExpression(HiveParser.java:40561)                                                                   
+        at org.apache.hadoop.hive.ql.parse.HiveParser.execStatement(HiveParser.java:1605)                                                                               
+        at org.apache.hadoop.hive.ql.parse.HiveParser.statement(HiveParser.java:1122)                                                                                   
+        at org.apache.hadoop.hive.ql.parse.ParseDriver.parse(ParseDriver.java:202)                                                                                      
+        at org.apache.hadoop.hive.ql.parse.ParseDriver.parse(ParseDriver.java:166)                                                                                      
+        at org.apache.hadoop.hive.ql.Driver.compile(Driver.java:437)                                                                                                    
+        at org.apache.hadoop.hive.ql.Driver.compile(Driver.java:320)                                                                                                    
+        at org.apache.hadoop.hive.ql.Driver.compileInternal(Driver.java:1219)                                                                                           
+        at org.apache.hadoop.hive.ql.Driver.runInternal(Driver.java:1260)                                                                                               
+        at org.apache.hadoop.hive.ql.Driver.run(Driver.java:1156)                                                                                                       
+        at org.apache.hadoop.hive.ql.Driver.run(Driver.java:1146)                                                                                                       
+        at org.apache.hadoop.hive.cli.CliDriver.processLocalCmd(CliDriver.java:216)                                                                                     
+        at org.apache.hadoop.hive.cli.CliDriver.processCmd(CliDriver.java:168)                                                                                          
+        at org.apache.hadoop.hive.cli.CliDriver.processLine(CliDriver.java:379)                                                                                         
+        at org.apache.hadoop.hive.cli.CliDriver.executeDriver(CliDriver.java:739)                                                                                       
+        at org.apache.hadoop.hive.cli.CliDriver.run(CliDriver.java:684)                                                                                                 
+        at org.apache.hadoop.hive.cli.CliDriver.main(CliDriver.java:624)                                                                                                
+        at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)                                                                                                  
+        at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:62)                                                                                
+        at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)                                                                        
+        at java.lang.reflect.Method.invoke(Method.java:498)                                                                                                             
+        at org.apache.hadoop.util.RunJar.run(RunJar.java:233)                                                                                                           
+        at org.apache.hadoop.util.RunJar.main(RunJar.java:148)                                                                                                          
+FAILED: ParseException line 3:0 required (...)+ loop did not match anything at input 'WHERE' in statement                                                               
+hive> -- Most Frequent Weather Condition in Delayed Deliveries (Over 150 Minutes)                                                                                       
+    > SELECT Weather, COUNT(*) AS Delay_Count                                                                                                                           
+    > FROM delivery_data                                                                                                                                                
+    > WHERE Delivery_Time > 150                                                                                                                                         
+    > GROUP BY Weather                                                                                                                                                  
+    > ORDER BY Delay_Count DESC;                                                                                                                                        
+Query ID = root_20241102171617_851a6f2d-61e1-4936-9947-b86ee5861256                                                                                                     
+Total jobs = 1                                                                                                                                                          
+Launching Job 1 out of 1                                                                                                                                                
+                                                                                                                                                                        
+                                                                                                                                                                        
+Status: Running (Executing on YARN cluster with App id application_1730561871358_0003)                                                                                  
+                                                                                                                                                                        
+--------------------------------------------------------------------------------
+        VERTICES      STATUS  TOTAL  COMPLETED  RUNNING  PENDING  FAILED  KILLED
+--------------------------------------------------------------------------------
+Map 1 ..........   SUCCEEDED      1          1        0        0       0       0
+Reducer 2 ......   SUCCEEDED      1          1        0        0       0       0                                                                                        
+Reducer 3 ......   SUCCEEDED      1          1        0        0       0       0                                                                                        
+--------------------------------------------------------------------------------
+VERTICES: 03/03  [==========================>>] 100%  ELAPSED TIME: 5.13 s     
+--------------------------------------------------------------------------------
+OK                                                                                                                                                                      
+fog     3045                                                                                                                                                            
+cloudy  3015                                                                                                                                                            
+windy   1780                                                                                                                                                            
+stormy  1766                                                                                                                                                            
+sandstorms      1762                                                                                                                                                    
+sunny   811                                                                                                                                                             
+0       16                                                                                                                                                              
+Time taken: 6.443 seconds, Fetched: 7 row(s)                                                                                                                            
+hive> -- Count of Deliveries by Agent Age Range                                                                                                                         
+    > SELECT CASE                                                                                                                                                       
+    >           WHEN Agent_Age BETWEEN 20 AND 25 THEN '20-25'                                                                                                           
+    >           WHEN Agent_Age BETWEEN 26 AND 30 THEN '26-30'                                                                                                           
+    >           WHEN Agent_Age BETWEEN 31 AND 35 THEN '31-35'                                                                                                           
+    >           ELSE '36 and above'                                                                                                                                     
+    >        END AS Age_Range,                                                                                                                                          
+    >        COUNT(*) AS Delivery_Count                                                                                                                                 
+    > FROM delivery_data                                                                                                                                                
+    > GROUP BY CASE                                                                                                                                                     
+    >              WHEN Agent_Age BETWEEN 20 AND 25 THEN '20-25'                                                                                                        
+    >              WHEN Agent_Age BETWEEN 26 AND 30 THEN '26-30'                                                                                                        
+    >              WHEN Agent_Age BETWEEN 31 AND 35 THEN '31-35'                                                                                                        
+    >              ELSE '36 and above'                                                                                                                                  
+    >           END;                                                                                                                                                    
+Query ID = root_20241102171737_cf2e89ca-1134-47f9-a23c-c8c178dcc960                                                                                                     
+Total jobs = 1                                                                                                                                                          
+Launching Job 1 out of 1                                                                                                                                                
+                                                                                                                                                                        
+                                                                                                                                                                        
+Status: Running (Executing on YARN cluster with App id application_1730561871358_0003)                                                                                  
+                                                                                                                                                                        
+--------------------------------------------------------------------------------
+        VERTICES      STATUS  TOTAL  COMPLETED  RUNNING  PENDING  FAILED  KILLED
+--------------------------------------------------------------------------------
+Map 1 ..........   SUCCEEDED      1          1        0        0       0       0
+Reducer 2 ......   SUCCEEDED      1          1        0        0       0       0                                                                                        
+--------------------------------------------------------------------------------
+VERTICES: 02/02  [==========================>>] 100%  ELAPSED TIME: 6.68 s     
+--------------------------------------------------------------------------------
+OK                                                                                                                                                                      
+20-25   12956                                                                                                                                                           
+26-30   10905                                                                                                                                                           
+31-35   10937                                                                                                                                                           
+36 and above    8942                                                                                                                                                    
+Time taken: 7.751 seconds, Fetched: 4 row(s)                                                                                                                            
+hive> -- Average Delivery Time by Country and Category                                                                                                                  
+    > SELECT Country, Category, AVG(Delivery_Time) AS Avg_Delivery_Time                                                                                                 
+    > FROM delivery_data                                                                                                                                                
+    > GROUP BY Country, Category;                                                                                                                                       
+Query ID = root_20241102171851_c19ec23c-d012-4903-bdda-707c4241f79d                                                                                                     
+Total jobs = 1                                                                                                                                                          
+Launching Job 1 out of 1                                                                                                                                                
+                                                                                                                                                                        
+                                                                                                                                                                        
+Status: Running (Executing on YARN cluster with App id application_1730561871358_0003)                                                                                  
+                                                                                                                                                                        
+--------------------------------------------------------------------------------
+        VERTICES      STATUS  TOTAL  COMPLETED  RUNNING  PENDING  FAILED  KILLED
+--------------------------------------------------------------------------------
+Map 1 ..........   SUCCEEDED      1          1        0        0       0       0
+Reducer 2 ......   SUCCEEDED      1          1        0        0       0       0                                                                                        
+--------------------------------------------------------------------------------
+VERTICES: 02/02  [==========================>>] 100%  ELAPSED TIME: 3.90 s     
+--------------------------------------------------------------------------------
+OK                                                                                                                                                                      
+China   Apparel 135.83064516129033                                                                                                                                      
+China   Books   130.05102040816325                                                                                                                                      
+China   Clothing        129.66836734693877                                                                                                                              
+China   Cosmetics       134.59030100334448                                                                                                                              
+China   Electronics     130.65749235474007                                                                                                                              
+China   Grocery 26.434571890145396                                                                                                                                      
+China   Home    131.07744107744108                                                                                                                                      
+China   Jewelry 133.7076923076923                                                                                                                                       
+China   Kitchen 130.47734627831716                                                                                                                                      
+China   Outdoors        127.96153846153847                                                                                                                              
+China   Pet Supplies    133.99525316455697                                                                                                                              
+China   Shoes   131.2414383561644                                                                                                                                       
+China   Skincare        132.35623003194888                                                                                                                              
+China   Snacks  133.46955128205127                                                                                                                                      
+China   Sports  131.5780998389694                                                                                                                                       
+China   Toys    130.17184942716858                                                                                                                                      
+Country Category        NULL                                                                                                                                            
+Germany Apparel 133.2593123209169                                                                                                                                       
+Germany Books   129.0921052631579                                                                                                                                       
+Germany Clothing        130.54131054131054                                                                                                                              
+Germany Cosmetics       131.7621776504298                                                                                                                               
+Germany Electronics     129.5095541401274                                                                                                                               
+Germany Grocery 26.6644908616188                                                                                                                                        
+Germany Home    128.01608579088472                                                                                                                                      
+Germany Jewelry 130.93586387434556                                                                                                                                      
+Germany Kitchen 131.20689655172413                                                                                                                                      
+Germany Outdoors        134.28477690288713                                                                                                                              
+Germany Pet Supplies    131.41496598639455                                                                                                                              
+Germany Shoes   130.3994673768309                                                                                                                                       
+Germany Skincare        131.69749009247028                                                                                                                              
+Germany Snacks  131.85089974293058                                                                                                                                      
+Germany Sports  133.1367292225201                                                                                                                                       
+Germany Toys    131.71085858585857                                                                                                                                      
+Other   Apparel 134.71311475409837                                                                                                                                      
+Other   Books   132.38845144356955                                                                                                                                      
+Other   Clothing        129.29799426934096                                                                                                                              
+Other   Cosmetics       136.1323155216285                                                                                                                               
+Other   Electronics     135.63002680965147                                                                                                                              
+Other   Grocery 26.578787878787878                                                                                                                                      
+Other   Home    134.7020725388601                                                                                                                                       
+Other   Jewelry 130.8673469387755                                                                                                                                       
+Other   Kitchen 133.97506925207756                                                                                                                                      
+Other   Outdoors        130.2680965147453                                                                                                                               
+Other   Pet Supplies    129.37321937321937                                                                                                                              
+Other   Shoes   129.0331491712707                                                                                                                                       
+Other   Skincare        133.10109289617486                                                                                                                              
+Other   Snacks  131.1141304347826                                                                                                                                       
+Other   Sports  130.76115485564304                                                                                                                                      
+Other   Toys    127.53561253561253                                                                                                                                      
+USA     Apparel 127.82327586206897                                                                                                                                      
+USA     Books   132.7066817667044                                                                                                                                       
+USA     Clothing        131.4994487320838                                                                                                                               
+USA     Cosmetics       131.87572590011615                                                                                                                              
+USA     Electronics     129.6497175141243                                                                                                                               
+USA     Grocery 26.58274231678487                                                                                                                                       
+USA     Home    132.3812351543943                                                                                                                                       
+USA     Jewelry 128.48714953271028                                                                                                                                      
+USA     Kitchen 133.9908779931585                                                                                                                                       
+USA     Outdoors        130.7897862232779                                                                                                                               
+USA     Pet Supplies    130.22595596755505                                                                                                                              
+USA     Shoes   133.21759259259258                                                                                                                                      
+USA     Skincare        131.63366336633663                                                                                                                              
+USA     Snacks  131.8287037037037                                                                                                                                       
+USA     Sports  132.83815028901734                                                                                                                                      
+USA     Toys    127.9652466367713                                                                                                                                       
+USA     Apparel 129.91228070175438                                                                                                                                      
+USA     Books   132.10526315789474                                                                                                                                      
+USA     Clothing        129.91735537190084                                                                                                                              
+USA     Cosmetics       128.18897637795277                                                                                                                              
+USA     Electronics     133.6184210526316                                                                                                                               
+USA     Grocery 25.923076923076923                                                                                                                                      
+USA     Home    126.45299145299145                                                                                                                                      
+USA     Jewelry 129.57142857142858                                                                                                                                      
+USA     Kitchen 131.2396694214876                                                                                                                                       
+USA     Outdoors        131.70833333333334                                                                                                                              
+USA     Pet Supplies    129.40366972477065                                                                                                                              
+USA     Shoes   126.33333333333333                                                                                                                                      
+USA     Skincare        132.10526315789474                                                                                                                              
+USA     Snacks  127.6470588235294                                                                                                                                       
+USA     Sports  130.4245283018868                                                                                                                                       
+USA     Toys    126.5925925925926                                                                                                                                       
+Time taken: 5.652 seconds, Fetched: 81 row(s)                                                                                                                           
+hive> -- Count of Orders Placed per Day                                                                                                                                 
+    > SELECT Order_Date, COUNT(*) AS Orders_Per_Day                                                                                                                     
+    > FROM delivery_data                                                                                                                                                
+    > GROUP BY Order_Date                                                                                                                                               
+    > ORDER BY Order_Date;                                                                                                                                              
+Query ID = root_20241102172007_7f061c77-1310-4989-b5bf-4077713b132f                                                                                                     
+Total jobs = 1                                                                                                                                                          
+Launching Job 1 out of 1                                                                                                                                                
+                                                                                                                                                                        
+                                                                                                                                                                        
+Status: Running (Executing on YARN cluster with App id application_1730561871358_0003)                                                                                  
+                                                                                                                                                                        
+--------------------------------------------------------------------------------
+        VERTICES      STATUS  TOTAL  COMPLETED  RUNNING  PENDING  FAILED  KILLED
+--------------------------------------------------------------------------------
+Map 1 ..........   SUCCEEDED      1          1        0        0       0       0
+Reducer 2 ......   SUCCEEDED      1          1        0        0       0       0                                                                                        
+Reducer 3 ......   SUCCEEDED      1          1        0        0       0       0                                                                                        
+--------------------------------------------------------------------------------
+VERTICES: 03/03  [==========================>>] 100%  ELAPSED TIME: 4.85 s     
+--------------------------------------------------------------------------------
+OK                                                                                                                                                                      
+2022-02-11      940                                                                                                                                                     
+2022-02-12      837                                                                                                                                                     
+2022-02-13      924                                                                                                                                                     
+2022-02-14      826                                                                                                                                                     
+2022-02-15      904                                                                                                                                                     
+2022-02-16      827                                                                                                                                                     
+2022-02-17      905                                                                                                                                                     
+2022-02-18      819                                                                                                                                                     
+2022-03-01      1076                                                                                                                                                    
+2022-03-02      969                                                                                                                                                     
+2022-03-03      1119                                                                                                                                                    
+2022-03-04      944                                                                                                                                                     
+2022-03-05      1112                                                                                                                                                    
+2022-03-06      949                                                                                                                                                     
+2022-03-07      1093                                                                                                                                                    
+2022-03-08      919                                                                                                                                                     
+2022-03-09      1117                                                                                                                                                    
+2022-03-10      947                                                                                                                                                     
+2022-03-11      1094                                                                                                                                                    
+2022-03-12      931                                                                                                                                                     
+2022-03-13      1123                                                                                                                                                    
+2022-03-14      931                                                                                                                                                     
+2022-03-15      1141                                                                                                                                                    
+2022-03-16      955                                                                                                                                                     
+2022-03-17      1085                                                                                                                                                    
+2022-03-18      932                                                                                                                                                     
+2022-03-19      1103                                                                                                                                                    
+2022-03-20      945                                                                                                                                                     
+2022-03-21      1107                                                                                                                                                    
+2022-03-23      922                                                                                                                                                     
+2022-03-24      1112                                                                                                                                                    
+2022-03-25      931                                                                                                                                                     
+2022-03-26      1119                                                                                                                                                    
+2022-03-27      932                                                                                                                                                     
+2022-03-28      1092                                                                                                                                                    
+2022-03-29      938                                                                                                                                                     
+2022-03-30      1091                                                                                                                                                    
+2022-03-31      929                                                                                                                                                     
+2022-04-01      1092                                                                                                                                                    
+2022-04-02      945                                                                                                                                                     
+2022-04-03      1133                                                                                                                                                    
+2022-04-04      905                                                                                                                                                     
+2022-04-05      1106                                                                                                                                                    
+2022-04-06      918                                                                                                                                                     
+Order_Date      1                                                                                                                                                       
+Time taken: 5.584 seconds, Fetched: 45 row(s)                                                                                                                           
+hive> -- Most Common Vehicle Type Used in Each Weather Condition                                                                                                        
+    > SELECT Weather, Vehicle, COUNT(*) AS Vehicle_Count                                                                                                                
+    > FROM delivery_data                                                                                                                                                
+    > GROUP BY Weather, Vehicle                                                                                                                                         
+    > ORDER BY Weather, Vehicle_Count DESC;                                                                                                                             
+Query ID = root_20241102172118_4e482218-b1d7-46cf-b476-c08baa0d5390                                                                                                     
+Total jobs = 1                                                                                                                                                          
+Launching Job 1 out of 1                                                                                                                                                
+                                                                                                                                                                        
+                                                                                                                                                                        
+Status: Running (Executing on YARN cluster with App id application_1730561871358_0003)                                                                                  
+                                                                                                                                                                        
+--------------------------------------------------------------------------------
+        VERTICES      STATUS  TOTAL  COMPLETED  RUNNING  PENDING  FAILED  KILLED
+--------------------------------------------------------------------------------
+Map 1 ..........   SUCCEEDED      1          1        0        0       0       0
+Reducer 2 ......   SUCCEEDED      1          1        0        0       0       0                                                                                        
+Reducer 3 ......   SUCCEEDED      1          1        0        0       0       0                                                                                        
+--------------------------------------------------------------------------------
+VERTICES: 03/03  [==========================>>] 100%  ELAPSED TIME: 4.92 s     
+--------------------------------------------------------------------------------
+OK                                                                                                                                                                      
+0       van     36                                                                                                                                                      
+0       scooter         32                                                                                                                                              
+0       bicycle         15                                                                                                                                              
+0       motorcycle      8                                                                                                                                               
+Weather Vehicle 1                                                                                                                                                       
+cloudy  motorcycle      4229                                                                                                                                            
+cloudy  scooter         2472                                                                                                                                            
+cloudy  van     587                                                                                                                                                     
+fog     motorcycle      4329                                                                                                                                            
+fog     scooter         2483                                                                                                                                            
+fog     van     628                                                                                                                                                     
+sandstorms      motorcycle      4246                                                                                                                                    
+sandstorms      scooter         2433                                                                                                                                    
+sandstorms      van     566                                                                                                                                             
+stormy  motorcycle      4307                                                                                                                                            
+stormy  scooter         2473                                                                                                                                            
+stormy  van     594                                                                                                                                                     
+sunny   motorcycle      4139                                                                                                                                            
+sunny   scooter         2367                                                                                                                                            
+sunny   van     572                                                                                                                                                     
+windy   motorcycle      4269                                                                                                                                            
+windy   scooter         2379                                                                                                                                            
+windy   van     575                                                                                                                                                     
+Time taken: 5.597 seconds, Fetched: 23 row(s)                                                                                                                           
+hive> -- Traffic Level with Highest Agent Ratings                                                                                                                       
+    > SELECT Traffic, AVG(Agent_Rating) AS Avg_Agent_Rating                                                                                                             
+    > FROM delivery_data                                                                                                                                                
+    > GROUP BY Traffic                                                                                                                                                  
+    > ORDER BY Avg_Agent_Rating DESC;                                                                                                                                   
+Query ID = root_20241102172232_64ac193f-8f88-436a-b574-ed63fd77d91c                                                                                                     
+Total jobs = 1                                                                                                                                                          
+Launching Job 1 out of 1                                                                                                                                                
+                                                                                                                                                                        
+                                                                                                                                                                        
+Status: Running (Executing on YARN cluster with App id application_1730561871358_0003)                                                                                  
+                                                                                                                                                                        
+--------------------------------------------------------------------------------
+        VERTICES      STATUS  TOTAL  COMPLETED  RUNNING  PENDING  FAILED  KILLED
+--------------------------------------------------------------------------------
+Map 1 ..........   SUCCEEDED      1          1        0        0       0       0
+Reducer 2 ......   SUCCEEDED      1          1        0        0       0       0                                                                                        
+Reducer 3 ......   SUCCEEDED      1          1        0        0       0       0                                                                                        
+--------------------------------------------------------------------------------
+VERTICES: 03/03  [==========================>>] 100%  ELAPSED TIME: 5.31 s     
+--------------------------------------------------------------------------------
+OK                                                                                                                                                                      
+Medium  4.654779827478105                                                                                                                                               
+High    4.652467408659738                                                                                                                                               
+Low     4.6404293645929595                                                                                                                                              
+Jam     4.590958103325849                                                                                                                                               
+NaN     3.912087912087912                                                                                                                                               
+Traffic NULL                                                                                                                                                            
+Time taken: 5.914 seconds, Fetched: 6 row(s)                                                                                                                            
+hive> -- Top 3 Product Categories with Highest Delivery Time in Each Country                                                                                            
+    > SELECT Country, Category, AVG(Delivery_Time) AS Avg_Delivery_Time                                                                                                 
+    > FROM delivery_data                                                                                                                                                
+    > GROUP BY Country, Category                                                                                                                                        
+    > ORDER BY Country, Avg_Delivery_Time DESC                                                                                                                          
+    > LIMIT 3;                                                                                                                                                          
+Query ID = root_20241102172337_f33e35a5-c0ac-44ca-9104-17c79490beff                                                                                                     
+Total jobs = 1                                                                                                                                                          
+Launching Job 1 out of 1                                                                                                                                                
+                                                                                                                                                                        
+                                                                                                                                                                        
+Status: Running (Executing on YARN cluster with App id application_1730561871358_0003)                                                                                  
+                                                                                                                                                                        
+--------------------------------------------------------------------------------
+        VERTICES      STATUS  TOTAL  COMPLETED  RUNNING  PENDING  FAILED  KILLED
+--------------------------------------------------------------------------------
+Map 1 ..........   SUCCEEDED      1          1        0        0       0       0
+Reducer 2 ......   SUCCEEDED      1          1        0        0       0       0                                                                                        
+Reducer 3 ......   SUCCEEDED      1          1        0        0       0       0                                                                                        
+--------------------------------------------------------------------------------
+VERTICES: 03/03  [==========================>>] 100%  ELAPSED TIME: 5.26 s     
+--------------------------------------------------------------------------------
+OK                                                                                                                                                                      
+China   Apparel 135.83064516129033                                                                                                                                      
+China   Cosmetics       134.59030100334448                                                                                                                              
+China   Pet Supplies    133.99525316455697                                                                                                                              
+Time taken: 5.903 seconds, Fetched: 3 row(s)                                                                                                                            
+hive> -- Top 5 Areas with Highest Average Delivery Time                                                                                                                 
+    > SELECT Area, AVG(Delivery_Time) AS Avg_Delivery_Time                                                                                                              
+    > FROM delivery_data                                                                                                                                                
+    > GROUP BY Area                                                                                                                                                     
+    > ORDER BY Avg_Delivery_Time DESC                                                                                                                                   
+    > LIMIT 5;                                                                                                                                                          
+Query ID = root_20241102172441_8e06211c-2a08-45e1-8b7a-0230298457b6                                                                                                     
+Total jobs = 1                                                                                                                                                          
+Launching Job 1 out of 1                                                                                                                                                
+                                                                                                                                                                        
+                                                                                                                                                                        
+Status: Running (Executing on YARN cluster with App id application_1730561871358_0003)                                                                                  
+                                                                                                                                                                        
+--------------------------------------------------------------------------------
+        VERTICES      STATUS  TOTAL  COMPLETED  RUNNING  PENDING  FAILED  KILLED
+--------------------------------------------------------------------------------
+Map 1 ..........   SUCCEEDED      1          1        0        0       0       0
+Reducer 2 ......   SUCCEEDED      1          1        0        0       0       0                                                                                        
+Reducer 3 ......   SUCCEEDED      1          1        0        0       0       0                                                                                        
+--------------------------------------------------------------------------------
+VERTICES: 03/03  [==========================>>] 100%  ELAPSED TIME: 5.53 s     
+--------------------------------------------------------------------------------
+OK                                                                                                                                                                      
+Semi-Urban      238.55263157894737                                                                                                                                      
+Metropolitian   129.70245886598568                                                                                                                                      
+Urban   109.4345195364578                                                                                                                                               
+Other   104.46485061511423                                                                                                                                              
+Area    NULL                                                                                                                                                            
+Time taken: 6.36 seconds, Fetched: 5 row(s)                                                                                                                             
+hive> -- Agent Age Group with Fastest Delivery Time                                                                                                                     
+    > SELECT CASE                                                                                                                                                       
+    >          WHEN Agent_Age BETWEEN 20 AND 25 THEN '20-25'                                                                                                            
+    >          WHEN Agent_Age BETWEEN 26 AND 30 THEN '26-30'                                                                                                            
+    >          WHEN Agent_Age BETWEEN 31 AND 35 THEN '31-35'                                                                                                            
+    >          ELSE '36 and above'                                                                                                                                      
+    >        END AS Age_Group,                                                                                                                                          
+    >        AVG(Delivery_Time) AS Avg_Delivery_Time                                                                                                                    
+    > FROM delivery_data                                                                                                                                                
+    > GROUP BY CASE                                                                                                                                                     
+    >            WHEN Agent_Age BETWEEN 20 AND 25 THEN '20-25'                                                                                                          
+    >            WHEN Agent_Age BETWEEN 26 AND 30 THEN '26-30'                                                                                                          
+    >            WHEN Agent_Age BETWEEN 31 AND 35 THEN '31-35'                                                                                                          
+    >            ELSE '36 and above'                                                                                                                                    
+    >          END                                                                                                                                                      
+    > ORDER BY Avg_Delivery_Time;                                                                                                                                       
+Query ID = root_20241102172553_19512a28-f5fa-49b6-aee8-6410767fb2a7                                                                                                     
+Total jobs = 1                                                                                                                                                          
+Launching Job 1 out of 1                                                                                                                                                
+                                                                                                                                                                        
+                                                                                                                                                                        
+Status: Running (Executing on YARN cluster with App id application_1730561871358_0003)                                                                                  
+                                                                                                                                                                        
+--------------------------------------------------------------------------------
+        VERTICES      STATUS  TOTAL  COMPLETED  RUNNING  PENDING  FAILED  KILLED
+--------------------------------------------------------------------------------
+Map 1 ..........   SUCCEEDED      1          1        0        0       0       0
+Reducer 2 ......   SUCCEEDED      1          1        0        0       0       0                                                                                        
+Reducer 3 ......   SUCCEEDED      1          1        0        0       0       0                                                                                        
+--------------------------------------------------------------------------------
+VERTICES: 03/03  [==========================>>] 100%  ELAPSED TIME: 3.92 s     
+--------------------------------------------------------------------------------
+OK                                                                                                                                                                      
+20-25   109.18570546464959                                                                                                                                              
+26-30   115.20641907381935                                                                                                                                              
+36 and above    139.75125824851807                                                                                                                                      
+31-35   141.0620828380726                                                                                                                                               
+Time taken: 4.5 seconds, Fetched: 4 row(s)                                                                                                                              
+hive>                      
